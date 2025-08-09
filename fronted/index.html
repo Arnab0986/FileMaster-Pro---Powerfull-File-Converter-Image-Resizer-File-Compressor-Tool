@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FileMaster Pro - Convert, Resize & Compress Files</title>
+    <meta name="description" content="FileMaster Pro: Convert, resize, and compress all file types online easily. Image, video, audio, document, and more supported." />
+    <link rel="icon" href="/favicon.ico" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" />
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans">
+    <!-- Navbar -->
+    <nav class="bg-white shadow-md py-4">
+        <div class="container mx-auto flex justify-between items-center px-4">
+            <h1 class="text-2xl font-bold text-blue-600">FileMaster Pro</h1>
+            <ul class="flex space-x-4">
+                <li><a href="#convert" class="hover:text-blue-500">Convert</a></li>
+                <li><a href="#resize" class="hover:text-blue-500">Resize</a></li>
+                <li><a href="#compress" class="hover:text-blue-500">Compress</a></li>
+                <li><a href="#about" class="hover:text-blue-500">About</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="bg-blue-100 py-12">
+        <div class="container mx-auto text-center px-4">
+            <h2 class="text-4xl font-semibold mb-4">Convert, Resize & Compress Any File Instantly</h2>
+            <p class="text-lg mb-6">All file types supported: Images, Videos, PDFs, Docs, Audio & more</p>
+            <a href="#convert" class="bg-blue-600 text-white px-6 py-3 rounded-md hover:bg-blue-700">Get Started</a>
+        </div>
+    </header>
+
+    <!-- Convert Tool Section -->
+    <section id="convert" class="py-12 bg-white">
+        <div class="container mx-auto px-4">
+            <h3 class="text-3xl font-semibold text-center mb-8">File Converter</h3>
+            <form id="convertForm" class="bg-gray-100 p-6 rounded-lg shadow-lg max-w-xl mx-auto" enctype="multipart/form-data">
+                <input type="file" name="file" class="block w-full mb-4" required />
+                <label class="block mb-2">Convert to:</label>
+                <select name="convertTo" class="w-full mb-4 p-2 border rounded" required>
+                    <option value="pdf">PDF</option>
+                    <option value="docx">DOCX</option>
+                    <option value="jpg">JPG</option>
+                    <option value="png">PNG</option>
+                    <option value="mp4">MP4</option>
+                    <option value="mp3">MP3</option>
+                </select>
+                <button type="submit" class="bg-blue-600 text-white w-full py-2 rounded hover:bg-blue-700">Convert</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Resize Tool Section -->
+    <section id="resize" class="py-12">
+        <div class="container mx-auto px-4">
+            <h3 class="text-3xl font-semibold text-center mb-8">Image Resizer</h3>
+            <form id="resizeForm" class="bg-gray-100 p-6 rounded-lg shadow-lg max-w-xl mx-auto" enctype="multipart/form-data">
+                <input type="file" name="image" class="block w-full mb-4" required />
+                <label class="block mb-2">Resize by Dimensions (px):</label>
+                <input type="number" name="width" placeholder="Width" class="w-full mb-2 p-2 border rounded" />
+                <input type="number" name="height" placeholder="Height" class="w-full mb-4 p-2 border rounded" />
+                <label class="block mb-2">OR Resize by Size (KB):</label>
+                <input type="number" name="targetSize" placeholder="Target Size (KB)" class="w-full mb-4 p-2 border rounded" />
+                <button type="submit" class="bg-blue-600 text-white w-full py-2 rounded hover:bg-blue-700">Resize</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Compress Tool Section -->
+    <section id="compress" class="py-12 bg-white">
+        <div class="container mx-auto px-4">
+            <h3 class="text-3xl font-semibold text-center mb-8">File Compressor</h3>
+            <form id="compressForm" class="bg-gray-100 p-6 rounded-lg shadow-lg max-w-xl mx-auto" enctype="multipart/form-data">
+                <input type="file" name="file" class="block w-full mb-4" required />
+                <label class="block mb-2">Compression Level:</label>
+                <select name="level" class="w-full mb-4 p-2 border rounded" required>
+                    <option value="low">Low</option>
+                    <option value="medium">Medium</option>
+                    <option value="high">High</option>
+                </select>
+                <button type="submit" class="bg-blue-600 text-white w-full py-2 rounded hover:bg-blue-700">Compress</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-12">
+        <div class="container mx-auto px-4 text-center">
+            <h3 class="text-3xl font-semibold mb-4">About FileMaster Pro</h3>
+            <p class="max-w-2xl mx-auto">We provide a free and secure way to convert, resize, and compress any file format directly in your browser. Powered by smart server-side tools, your files are processed efficiently with downloadable results.</p>
+        </div>
+    </section>
+
+    <footer class="bg-gray-200 text-center py-4">
+        <p>&copy; 2025 FileMaster Pro. All rights reserved.</p>
+    </footer>
+
+    <script>
+        document.getElementById('convertForm').onsubmit = async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const res = await fetch('/api/convert', {
+                method: 'POST',
+                body: formData
+            });
+            const blob = await res.blob();
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'converted_file';
+            a.click();
+        };
+
+        document.getElementById('resizeForm').onsubmit = async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const res = await fetch('/api/resize', {
+                method: 'POST',
+                body: formData
+            });
+            const blob = await res.blob();
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'resized_image';
+            a.click();
+        };
+
+        document.getElementById('compressForm').onsubmit = async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const res = await fetch('/api/compress', {
+                method: 'POST',
+                body: formData
+            });
+            const blob = await res.blob();
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'compressed_file';
+            a.click();
+        };
+    </script>
+</body>
+</html>
